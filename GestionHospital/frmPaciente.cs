@@ -71,7 +71,7 @@ namespace GestionHospital
             txtApellido.Clear();
             txtNombre.Clear();
             txtEdad.Clear();
-            //this.principal.ActualizarListaPacientes(pacientes);
+            this.principal.ActualizarListaPacientes(pacientes);
             RefrescarGrid();
         }
 
