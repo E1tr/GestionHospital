@@ -30,12 +30,14 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPaciente));
             tlsPrincipal = new ToolStrip();
+            toolStripButton1 = new ToolStripButton();
             tsbEliminar = new ToolStripButton();
             tsbEliminarEditar = new ToolStripButton();
             tsbIngresos = new ToolStripButton();
             mnuPrincipal = new MenuStrip();
             tlsMnuHopital = new ToolStripMenuItem();
             tlsMnuPaciente = new ToolStripMenuItem();
+            agregarToolStripMenuItem = new ToolStripMenuItem();
             eliminarToolStripMenuItem = new ToolStripMenuItem();
             editarToolStripMenuItem = new ToolStripMenuItem();
             tlsMnuIngresos = new ToolStripMenuItem();
@@ -66,12 +68,22 @@
             // tlsPrincipal
             // 
             tlsPrincipal.BackColor = Color.FromArgb(245, 250, 255);
-            tlsPrincipal.Items.AddRange(new ToolStripItem[] { tsbEliminar, tsbEliminarEditar, tsbIngresos });
+            tlsPrincipal.Items.AddRange(new ToolStripItem[] { toolStripButton1, tsbEliminar, tsbEliminarEditar, tsbIngresos });
             tlsPrincipal.Location = new Point(0, 24);
             tlsPrincipal.Name = "tlsPrincipal";
             tlsPrincipal.Size = new Size(800, 25);
             tlsPrincipal.TabIndex = 3;
             tlsPrincipal.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.ImageTransparentColor = Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size(23, 22);
+            toolStripButton1.Text = "toolStripButton1";
+            toolStripButton1.Click += toolStripButton1_Click;
             // 
             // tsbEliminar
             // 
@@ -121,29 +133,36 @@
             // 
             // tlsMnuPaciente
             // 
-            tlsMnuPaciente.DropDownItems.AddRange(new ToolStripItem[] { eliminarToolStripMenuItem, editarToolStripMenuItem });
+            tlsMnuPaciente.DropDownItems.AddRange(new ToolStripItem[] { agregarToolStripMenuItem, eliminarToolStripMenuItem, editarToolStripMenuItem });
             tlsMnuPaciente.Name = "tlsMnuPaciente";
-            tlsMnuPaciente.Size = new Size(119, 22);
+            tlsMnuPaciente.Size = new Size(180, 22);
             tlsMnuPaciente.Text = "Paciente";
+            // 
+            // agregarToolStripMenuItem
+            // 
+            agregarToolStripMenuItem.Name = "agregarToolStripMenuItem";
+            agregarToolStripMenuItem.Size = new Size(180, 22);
+            agregarToolStripMenuItem.Text = "Agregar";
+            agregarToolStripMenuItem.Click += agregarToolStripMenuItem_Click;
             // 
             // eliminarToolStripMenuItem
             // 
             eliminarToolStripMenuItem.Name = "eliminarToolStripMenuItem";
-            eliminarToolStripMenuItem.Size = new Size(117, 22);
+            eliminarToolStripMenuItem.Size = new Size(180, 22);
             eliminarToolStripMenuItem.Text = "Eliminar";
             eliminarToolStripMenuItem.Click += eliminarToolStripMenuItem_Click;
             // 
             // editarToolStripMenuItem
             // 
             editarToolStripMenuItem.Name = "editarToolStripMenuItem";
-            editarToolStripMenuItem.Size = new Size(117, 22);
+            editarToolStripMenuItem.Size = new Size(180, 22);
             editarToolStripMenuItem.Text = "Editar";
             // 
             // tlsMnuIngresos
             // 
             tlsMnuIngresos.DropDownItems.AddRange(new ToolStripItem[] { listarToolStripMenuItem });
             tlsMnuIngresos.Name = "tlsMnuIngresos";
-            tlsMnuIngresos.Size = new Size(119, 22);
+            tlsMnuIngresos.Size = new Size(180, 22);
             tlsMnuIngresos.Text = "Ingresos";
             // 
             // listarToolStripMenuItem
@@ -352,5 +371,7 @@
         private TextBox txtEdad;
         private Label label3;
         private Button btnEditar;
+        private ToolStripButton toolStripButton1;
+        private ToolStripMenuItem agregarToolStripMenuItem;
     }
 }

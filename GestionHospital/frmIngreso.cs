@@ -20,6 +20,8 @@ namespace GestionHospital
             dtpAlta.Enabled = false;
             lblTitulo.Text = "Ingresos del paciente: " + _paciente.Nombre + " " + _paciente.Apellidos;
             btnEditar.Visible = false;
+            cmbEspecialidad.SelectedItem = 0;
+
         }
 
         public void RefrescarGrid() //Está función lo que hace es refrescar la tabla 
@@ -35,10 +37,19 @@ namespace GestionHospital
 
         private void button1_Click(object sender, EventArgs e) //Esto lo que hace es crear un nuevo ingreso
         {
+            DateTime? alta = new DateTime();
+            if (cbAlta.Checked)
+            {
+                alta = dtpAlta.Value;
+            }
+            else
+            {
+                alta = null;
+            }
             Ingreso nuevoIngreso = new Ingreso(
                 _paciente.Ingresos.Count + 1,
                 dtpIngreso.Value,
-                dtpAlta.Value,
+                alta,
                 txtMotivo.Text,
                 numHabitacion.Value.ToString(),
                 cmbEspecialidad.SelectedItem?.ToString() ?? "Sin especialidad"
@@ -50,9 +61,10 @@ namespace GestionHospital
             RefrescarGrid(); //Llamamos a la función para refrescar el greed
 
             MessageBox.Show("Ingreso agregado correctamente.", "Ingreso", MessageBoxButtons.OK, MessageBoxIcon.Information); //Informamos de que se a añadido correctamente
-            txtMotivo.Text = "";
+            txtMotivo.Clear();
             numHabitacion.Value = 0;
-            
+            cmbEspecialidad.SelectedItem = 0;
+
         }
 
         private void lblTitulo_Click(object sender, EventArgs e)
@@ -128,10 +140,11 @@ namespace GestionHospital
 
         private void editarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            btnEditar.Visible = true;
-            btnAgregar.Visible = false;
+
             if (dgvIngresos.CurrentRow != null)
             {
+                btnEditar.Visible = true;
+                btnAgregar.Visible = false;
                 Ingreso editarIngreso = (Ingreso)dgvIngresos.CurrentRow.DataBoundItem;
                 txtMotivo.Text = editarIngreso.Motivo;
                 dtpIngreso.Value = editarIngreso.FechaIngreso;
@@ -143,6 +156,15 @@ namespace GestionHospital
                 cmbEspecialidad.SelectedItem = editarIngreso.Especialidad;
 
             }
+        }
+
+        private void agregarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnEditar.Visible = false;
+            btnAgregar.Visible = true;
+            txtMotivo.Clear();
+            numHabitacion.Value = 0;
+            cmbEspecialidad.SelectedItem = 0;
         }
     }
 }

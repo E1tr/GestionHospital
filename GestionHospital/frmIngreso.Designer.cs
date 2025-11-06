@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             mnuPrincipal = new MenuStrip();
+            editarToolStripMenuItem = new ToolStripMenuItem();
             tlsMnuAyuda = new ToolStripMenuItem();
             tlsMnuSaberMas = new ToolStripMenuItem();
             lblTitulo = new Label();
@@ -50,7 +51,7 @@
             label1 = new Label();
             panel1 = new Panel();
             dgvIngresos = new DataGridView();
-            editarToolStripMenuItem = new ToolStripMenuItem();
+            agregarToolStripMenuItem = new ToolStripMenuItem();
             mnuPrincipal.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numHabitacion).BeginInit();
@@ -61,12 +62,19 @@
             // mnuPrincipal
             // 
             mnuPrincipal.BackColor = Color.FromArgb(245, 250, 255);
-            mnuPrincipal.Items.AddRange(new ToolStripItem[] { editarToolStripMenuItem, tlsMnuAyuda, tlsMnuSaberMas });
+            mnuPrincipal.Items.AddRange(new ToolStripItem[] { agregarToolStripMenuItem, editarToolStripMenuItem, tlsMnuAyuda, tlsMnuSaberMas });
             mnuPrincipal.Location = new Point(0, 0);
             mnuPrincipal.Name = "mnuPrincipal";
             mnuPrincipal.Size = new Size(800, 24);
             mnuPrincipal.TabIndex = 10;
             mnuPrincipal.Text = "menuStrip1";
+            // 
+            // editarToolStripMenuItem
+            // 
+            editarToolStripMenuItem.Name = "editarToolStripMenuItem";
+            editarToolStripMenuItem.Size = new Size(49, 20);
+            editarToolStripMenuItem.Text = "Editar";
+            editarToolStripMenuItem.Click += editarToolStripMenuItem_Click;
             // 
             // tlsMnuAyuda
             // 
@@ -185,7 +193,7 @@
             // 
             // dtpAlta
             // 
-            dtpAlta.CustomFormat = "dd/mm/yyyy hh:mm";
+            dtpAlta.CustomFormat = "dd/MM/yyyy hh:mm";
             dtpAlta.Format = DateTimePickerFormat.Custom;
             dtpAlta.Location = new Point(13, 151);
             dtpAlta.Name = "dtpAlta";
@@ -194,7 +202,7 @@
             // 
             // dtpIngreso
             // 
-            dtpIngreso.CustomFormat = "dd/mm/yyyy  hh:mm";
+            dtpIngreso.CustomFormat = "dd/MM/yyyy  hh:mm";
             dtpIngreso.Format = DateTimePickerFormat.Custom;
             dtpIngreso.Location = new Point(13, 73);
             dtpIngreso.Name = "dtpIngreso";
@@ -273,12 +281,12 @@
             dgvIngresos.Size = new Size(459, 345);
             dgvIngresos.TabIndex = 1;
             // 
-            // editarToolStripMenuItem
+            // agregarToolStripMenuItem
             // 
-            editarToolStripMenuItem.Name = "editarToolStripMenuItem";
-            editarToolStripMenuItem.Size = new Size(49, 20);
-            editarToolStripMenuItem.Text = "Editar";
-            editarToolStripMenuItem.Click += editarToolStripMenuItem_Click;
+            agregarToolStripMenuItem.Name = "agregarToolStripMenuItem";
+            agregarToolStripMenuItem.Size = new Size(61, 20);
+            agregarToolStripMenuItem.Text = "Agregar";
+            agregarToolStripMenuItem.Click += agregarToolStripMenuItem_Click;
             // 
             // frmIngreso
             // 
@@ -326,5 +334,6 @@
         private Button btnEditar;
         private CheckBox cbAlta;
         private ToolStripMenuItem editarToolStripMenuItem;
+        private ToolStripMenuItem agregarToolStripMenuItem;
     }
 }

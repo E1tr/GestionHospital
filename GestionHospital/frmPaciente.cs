@@ -68,7 +68,9 @@ namespace GestionHospital
                 pacientes.Add(nuevoPaciente);
                 MessageBox.Show("Paciente agregado correctamente.", "Paciente", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-                
+            txtApellido.Clear();
+            txtNombre.Clear();
+            txtEdad.Clear();
             //this.principal.ActualizarListaPacientes(pacientes);
             RefrescarGrid();
         }
@@ -195,6 +197,24 @@ namespace GestionHospital
             }
             RefrescarGrid();
             principal.ActualizarListaPacientes(pacientes);
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            btnEditar.Visible = false;
+            button1.Visible = true;
+            txtApellido.Clear();
+            txtNombre.Clear();
+            txtEdad.Clear();
+        }
+
+        private void agregarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnEditar.Visible = false;
+            button1.Visible = true;
+            txtApellido.Clear();
+            txtNombre.Clear();
+            txtEdad.Clear();
         }
     }
 }
