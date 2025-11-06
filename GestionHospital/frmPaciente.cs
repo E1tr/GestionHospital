@@ -1,0 +1,200 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace GestionHospital
+{
+    public partial class frmPaciente : Form
+    {
+        // Lo que hago aquí es inicializar 3 variables para posteriormente utilizarlas en el formulario
+        List<Paciente> pacientes = new List<Paciente>();
+        frmPrincipal principal;
+        Paciente? paciente = null;
+        public frmPaciente(List<Paciente> pacientes, Paciente? paciente, frmPrincipal principal)
+        {
+            // Lo que hago aquí es darle el valor a las variables en base a lo que conviene en el momento
+            InitializeComponent();
+            this.principal = principal;
+            if (paciente != null) //Si el paciente no está vacio se rellenan los campos con los datos, ocultando el boton de agregar y mostrando el de editar
+            {
+                this.paciente = paciente;
+                txtNombre.Text = paciente.Nombre;
+                txtApellido.Text = paciente.Apellidos;
+                txtEdad.Text = paciente.Edad.ToString();
+                button1.Visible = false;
+                btnEditar.Visible = true;
+                txtNombre.Text = paciente.Nombre;
+                txtApellido.Text = paciente.Apellidos;
+                txtEdad.Text = paciente.Edad.ToString();
+
+            }
+            else
+            {
+                button1.Visible = true;
+                btnEditar.Visible = false;
+            }
+            this.pacientes = pacientes;
+            RefrescarGrid();
+        }
+
+        private void RefrescarGrid() // Está funcion es la que se encarga de refrescar el dataGridView
+        {
+            dgvPaciente.DataSource = null;
+            dgvPaciente.DataSource = pacientes;
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!int.TryParse(txtEdad.Text, out int edad) || edad <= 0)
+            {
+                MessageBox.Show("Edad inválida. Por favor introduzca un número entero mayor que 0.", "Edad inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                Paciente nuevoPaciente = new Paciente(
+                    pacientes.Count + 1,
+                    txtNombre.Text,
+                    txtApellido.Text,
+                    edad
+                );
+
+                pacientes.Add(nuevoPaciente);
+                MessageBox.Show("Paciente agregado correctamente.", "Paciente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+                
+            //this.principal.ActualizarListaPacientes(pacientes);
+            RefrescarGrid();
+        }
+
+        private void btnAgregarIngreso_Click(object sender, EventArgs e)
+        {
+
+            if (dgvPaciente.CurrentRow == null)
+            {
+                return;
+            }
+            else
+            {
+                Paciente pacienteSeleccionado = (Paciente)dgvPaciente.CurrentRow.DataBoundItem;
+                Form Ingresos = new frmIngreso(pacienteSeleccionado);
+                Ingresos.ShowDialog();
+                RefrescarGrid();
+            }
+
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            // Validar que la edad sea un entero válido y mayor que 0.
+            if (!int.TryParse(txtEdad.Text, out int edad) || edad <= 0)
+            {
+                MessageBox.Show("Edad inválida. Por favor introduzca un número entero mayor que 0.", "Edad inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return; // Obliga al usuario a corregir antes de continuar
+            }
+            if (dgvPaciente.CurrentRow == null)
+            {
+                return;
+            }
+            else
+            {
+                paciente.Nombre = txtNombre.Text;
+                paciente.Apellidos = txtApellido.Text;
+                paciente.Edad = edad;
+            }
+            RefrescarGrid();
+            principal.ActualizarListaPacientes(pacientes);
+        }
+
+        private void tlsMnuAyuda_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Esta es una aplicación para gestionar un Hotel.\n\n" +
+                "Utilice los botones o el menú para agregar, eliminar, buscar o listar ingresos.\n\n" +
+                "Desarrollado por E1tr.", "Ayuda", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void tlsMnuSaberMas_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Interfaz de Hospital v1.0\n\n" +
+                "Desarrollado por E1tr.\n", "Acerca de", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void eliminarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvPaciente.CurrentRow != null) // Verificar si hay una fila seleccionada
+            {
+                Paciente pacienteSeleccionado = (Paciente)dgvPaciente.CurrentRow.DataBoundItem; // Obtener el paciente seleccionado
+                var resultado = MessageBox.Show($"¿Está seguro de que desea eliminar al paciente {pacienteSeleccionado.Nombre} {pacienteSeleccionado.Apellidos}?", "Eliminar Paciente", MessageBoxButtons.YesNo, MessageBoxIcon.Question); // Mensaje de confirmación
+                if (resultado == DialogResult.Yes) // Si el usuario confirma la eliminación
+                {
+                    pacientes.Remove(pacienteSeleccionado); // Eliminar el paciente de la lista
+                }
+                RefrescarGrid(); // Refrescar el DataGridView para mostrar los cambios
+                this.principal.ActualizarListaPacientes(pacientes); // Actualizar la lista de pacientes en el formulario principal
+            }
+            else
+            {
+                MessageBox.Show("Por favor, seleccione un paciente para editar.", "Editar Paciente", MessageBoxButtons.OK, MessageBoxIcon.Warning); // Mensaje de advertencia si no hay una fila seleccionada
+
+
+            }
+        }
+
+        private void tsbEliminar_Click(object sender, EventArgs e)
+        {
+            if (dgvPaciente.CurrentRow != null) // Verificar si hay una fila seleccionada
+            {
+                Paciente pacienteSeleccionado = (Paciente)dgvPaciente.CurrentRow.DataBoundItem; // Obtener el paciente seleccionado
+                var resultado = MessageBox.Show($"¿Está seguro de que desea eliminar al paciente {pacienteSeleccionado.Nombre} {pacienteSeleccionado.Apellidos}?", "Eliminar Paciente", MessageBoxButtons.YesNo, MessageBoxIcon.Question); // Mensaje de confirmación
+                if (resultado == DialogResult.Yes) // Si el usuario confirma la eliminación
+                {
+                    pacientes.Remove(pacienteSeleccionado); // Eliminar el paciente de la lista
+                }
+                RefrescarGrid(); // Refrescar el DataGridView para mostrar los cambios
+                this.principal.ActualizarListaPacientes(pacientes); // Actualizar la lista de pacientes en el formulario principal
+            }
+            else
+            {
+                MessageBox.Show("Por favor, seleccione un paciente para editar.", "Editar Paciente", MessageBoxButtons.OK, MessageBoxIcon.Warning); // Mensaje de advertencia si no hay una fila seleccionada
+
+
+            }
+        }
+
+        private void tsbEliminarEditar_Click(object sender, EventArgs e)
+        {
+            if (dgvPaciente.CurrentRow != null)
+            {
+                btnEditar.Visible = true;
+                button1.Visible = false;
+                paciente = (Paciente)dgvPaciente.CurrentRow.DataBoundItem;
+                txtNombre.Text = paciente.Nombre;
+                txtApellido.Text = paciente.Apellidos;
+                txtEdad.Text = paciente.Edad.ToString();
+            }
+            RefrescarGrid();
+            principal.ActualizarListaPacientes(pacientes);
+        }
+
+        private void editarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvPaciente.CurrentRow != null)
+            {
+                btnEditar.Visible = true;
+                button1.Visible = false;
+                paciente = (Paciente)dgvPaciente.CurrentRow.DataBoundItem;
+                txtNombre.Text = paciente.Nombre;
+                txtApellido.Text = paciente.Apellidos;
+                txtEdad.Text = paciente.Edad.ToString();
+            }
+            RefrescarGrid();
+            principal.ActualizarListaPacientes(pacientes);
+        }
+    }
+}
