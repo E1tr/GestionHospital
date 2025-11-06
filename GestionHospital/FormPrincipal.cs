@@ -1,8 +1,11 @@
+using System.ComponentModel;
+
 namespace GestionHospital
 {
     public partial class frmPrincipal : Form
     {
-        private List<Paciente> listaPacientes = new List<Paciente>();
+        private BindingList<Paciente> listaPacientes = new BindingList<Paciente>();
+
         public frmPrincipal()
         {
             InitializeComponent();
@@ -12,8 +15,14 @@ namespace GestionHospital
         // Refrescar el DataGridView con la lista de pacientes
         private void RefrescarGrid()
         {
-            dgvPrincipal.DataSource = null;
-            dgvPrincipal.DataSource = listaPacientes;
+            if (dgvPrincipal.DataSource == null)
+            {
+                dgvPrincipal.DataSource = listaPacientes;
+            }
+            else
+            {
+                dgvPrincipal.Refresh(); // no toques DataSource para no romper los enlaces
+            }
         }
 
 
@@ -229,7 +238,7 @@ namespace GestionHospital
             MessageBox.Show("Interfaz de Hospital v1.0\n\n" +
                "Desarrollado por E1tr.\n", "Acerca de", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        public void ActualizarListaPacientes(List<Paciente> pacientes)
+        public void ActualizarListaPacientes(BindingList<Paciente> pacientes)
         {
             listaPacientes = pacientes;
             RefrescarGrid();

@@ -13,29 +13,15 @@ namespace GestionHospital
     public partial class frmPaciente : Form
     {
         // Lo que hago aquí es inicializar 3 variables para posteriormente utilizarlas en el formulario
-        List<Paciente> pacientes = new List<Paciente>();
+        BindingList<Paciente> pacientes;
         frmPrincipal principal;
         Paciente? paciente = null;
-        public frmPaciente(List<Paciente> pacientes, Paciente? paciente, frmPrincipal principal)
+        public frmPaciente(BindingList<Paciente> pacientes, Paciente? paciente, frmPrincipal principal)
         {
+            this.principal = principal;
             this.pacientes = pacientes;
             // Lo que hago aquí es darle el valor a las variables en base a lo que conviene en el momento
             InitializeComponent();
-            this.Load += frmPaciente_Load;
-        }
-
-        private void frmPaciente_Load(object sender, EventArgs e)
-        {
-            // Configuración estable (se ejecuta una sola vez al mostrar el formulario)
-            dgvPaciente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvPaciente.MultiSelect = false;
-            dgvPaciente.AutoGenerateColumns = true; // false si defines columnas manualmente
-            dgvPaciente.AllowUserToAddRows = false;
-
-            // Asignar DataSource solo una vez aquí (evita hacerlo repetidamente en otros handlers)
-            RefrescarGrid();
-
-            // Estado inicial según si venimos a editar o a añadir
             if (paciente != null)
             {
                 // Rellenar campos con el paciente pasado y seleccionar su fila
@@ -45,6 +31,7 @@ namespace GestionHospital
 
                 btnEditar.Visible = true;
                 button1.Visible = false;
+
             }
             else
             {
@@ -57,13 +44,21 @@ namespace GestionHospital
                 button1.Visible = true;
 
             }
+            dgvPaciente.DataSource = null;
+            dgvPaciente.DataSource = pacientes;
         }
 
 
         private void RefrescarGrid() // Está funcion es la que se encarga de refrescar el dataGridView
         {
-            dgvPaciente.DataSource = null;
-            dgvPaciente.DataSource = pacientes;
+            if (dgvPaciente.DataSource == null)
+            {
+                dgvPaciente.DataSource = pacientes;
+            }
+            else
+            {
+                dgvPaciente.Refresh(); // no toques DataSource para no romper los enlaces
+            }
         }
 
 
@@ -90,6 +85,7 @@ namespace GestionHospital
             txtEdad.Clear();
             this.principal.ActualizarListaPacientes(pacientes);
             RefrescarGrid();
+            dgvPaciente.ClearSelection(); // Evita referencias viejas
         }
 
         private void btnAgregarIngreso_Click(object sender, EventArgs e)
