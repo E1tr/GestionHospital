@@ -18,30 +18,47 @@ namespace GestionHospital
         Paciente? paciente = null;
         public frmPaciente(List<Paciente> pacientes, Paciente? paciente, frmPrincipal principal)
         {
+            this.pacientes = pacientes;
             // Lo que hago aquí es darle el valor a las variables en base a lo que conviene en el momento
             InitializeComponent();
-            this.principal = principal;
-            if (paciente != null) //Si el paciente no está vacio se rellenan los campos con los datos, ocultando el boton de agregar y mostrando el de editar
+            this.Load += frmPaciente_Load;
+        }
+
+        private void frmPaciente_Load(object sender, EventArgs e)
+        {
+            // Configuración estable (se ejecuta una sola vez al mostrar el formulario)
+            dgvPaciente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvPaciente.MultiSelect = false;
+            dgvPaciente.AutoGenerateColumns = true; // false si defines columnas manualmente
+            dgvPaciente.AllowUserToAddRows = false;
+
+            // Asignar DataSource solo una vez aquí (evita hacerlo repetidamente en otros handlers)
+            RefrescarGrid();
+
+            // Estado inicial según si venimos a editar o a añadir
+            if (paciente != null)
             {
-                this.paciente = paciente;
-                txtNombre.Text = paciente.Nombre;
-                txtApellido.Text = paciente.Apellidos;
-                txtEdad.Text = paciente.Edad.ToString();
-                button1.Visible = false;
-                btnEditar.Visible = true;
+                // Rellenar campos con el paciente pasado y seleccionar su fila
                 txtNombre.Text = paciente.Nombre;
                 txtApellido.Text = paciente.Apellidos;
                 txtEdad.Text = paciente.Edad.ToString();
 
+                btnEditar.Visible = true;
+                button1.Visible = false;
             }
             else
             {
-                button1.Visible = true;
+                // Preparar formulario para añadir
+                txtNombre.Clear();
+                txtApellido.Clear();
+                txtEdad.Clear();
+
                 btnEditar.Visible = false;
+                button1.Visible = true;
+
             }
-            this.pacientes = pacientes;
-            RefrescarGrid();
         }
+
 
         private void RefrescarGrid() // Está funcion es la que se encarga de refrescar el dataGridView
         {
